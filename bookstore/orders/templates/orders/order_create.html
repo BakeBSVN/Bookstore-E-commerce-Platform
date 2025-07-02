@@ -1,0 +1,188 @@
+{% extends 'bookshop/base.html' %}
+{% load static %}
+<title>{% block title %} Checkout | Bookshop {% endblock%}</title>
+{% block content %} 
+    <div class="ps-hero">
+        <div class="container">
+            <h3>Order Detail</h3>
+            <p>Page Order</p>
+        </div>
+    </div>
+    <div class="ps-checkout pt-40 pb-40">
+        <div class="ps-container">
+            <form class="ps-form--checkout" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 ">
+                        <div class="ps-checkout__billing">
+                            <h3>Billing Detail</h3>
+                            <div class="form-group form-group--inline">
+                                <label>First Name<span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="text" name="first_name" required>
+                                </div>
+                            </div>
+                            <div class="form-group form-group--inline">
+                                <label>Last Name<span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="text" name="last_name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group--inline">
+                                <label>Email Address<span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="form-group form-group--inline">
+                                <label>Address <span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="text" name="address" required>
+                                </div>
+                            </div>
+                            <div class="form-group form-group--inline">
+                                <label>Phone<span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="text" name="phone">
+                                </div>
+                            </div>
+                            <div class="form-group form-group--inline">
+                                <label>Postal Code<span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="text" name="postal_code">
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group--inline">
+                                <label>City <span>*</span>
+                                </label>
+                                <div class="form-group__content">
+                                    <input class="form-control" type="text" name="city">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+                        <div class="ps-checkout__order">
+                            <header>
+                                <h3>Your Order</h3>
+                            </header>
+                            <div class="content">
+                                <table class="table ps-checkout__products">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase">Product</th>
+                                            <th class="text-uppercase">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in cart %}
+                                            <tr>
+                                                <td>{{ item.product.name }} {{ item.quantity }}x</td>
+                                                <td> <span class="item-price">{{ item.total_price|floatformat:2 }}</span></td>
+                                            </tr>
+                                        {% endfor %}
+                                        {% if cart.coupon %}
+                                        <tr>
+                                            <td>"{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% off) </td>
+                                            <td>
+                                                <span style="color: red;">- <span class="discount">{{ cart.get_discount|floatformat:2 }}</span></span>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>Total Price: </td>
+                                            <td> <span class="total-price">{{ cart.get_total_price_after_discount|floatformat:2 }}</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <footer>
+                                <h3>Payment Method</h3>
+                                <div class="form-group paypal">
+                                    <div class="ps-radio ps-radio--small">
+                                        <input class="form-control" type="radio" name="payment_method" id="payment_vnpay" value="vnpay" checked>
+                                        <label for="payment_vnpay">VNPay</label>
+                                    </div>
+
+                                    <div class="ps-radio ps-radio--small">
+                                        <input class="form-control" type="radio" name="payment_method" id="payment_braintree" value="braintree" >
+                                        <label for="payment_braintree">Paypal</label>
+                                    </div>
+
+                                    <ul class="ps-payment-method">
+                                        <li><a href="#"><img src="{% static 'bookshop/images/payment/visa.png' %}" alt=""></a></li>
+                                        <li><a href="#"><img src="{% static 'bookshop/images/payment/mastercard.png' %}" alt=""></a></li>
+                                        <li><a href="#"><img src="{% static 'bookshop/images/payment/vnpay.png' %}" alt=""></a></li>
+                                    </ul>
+                                    <button class="ps-btn ps-btn--fullwidth">Process to Payment</button>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiKey = '956965d01d77999dc71ab1ad'; // Thay thế bằng API key của bạn
+            const apiURL = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+
+            let exchangeRate;
+            let originalPrices = {};
+
+            fetch(apiURL)
+                .then(response => response.json())
+                .then(data => {
+                    exchangeRate = data.conversion_rates.VND;
+                    console.log('Exchange rate loaded:', exchangeRate);
+                })
+                .catch(error => console.error('Error fetching exchange rate:', error));
+
+            const radioButtons = document.querySelectorAll('input[name="payment_method"]');
+            const prices = document.querySelectorAll('.item-price, .discount, .total-price');
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'braintree') {
+                        convertToUSD();
+                    } else {
+                        revertToOriginal();
+                    }
+                });
+            });
+
+            function storeOriginalPrices() {
+                prices.forEach((priceElement, index) => {
+                    originalPrices[index] = parseFloat(priceElement.innerText.replace(/,/g, '').replace('₫', ''));
+                });
+            }
+
+            function convertToUSD() {
+                prices.forEach((priceElement, index) => {
+                    const vndPrice = originalPrices[index];
+                    const usdPrice = vndPrice / exchangeRate;
+                    priceElement.innerText = '$'+ usdPrice.toFixed(2);
+                });
+            }
+
+            function revertToOriginal() {
+                prices.forEach((priceElement, index) => {
+                    priceElement.innerText = '₫' + originalPrices[index].toFixed(2);
+                });
+            }
+
+            storeOriginalPrices();
+        });
+    </script>
+{% endblock %}

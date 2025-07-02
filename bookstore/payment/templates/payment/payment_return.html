@@ -1,0 +1,22 @@
+{% extends "bookshop/base.html" %}
+{% block title %}Payment successful{% endblock %}
+{% block content %}
+
+<div class="ps-hero">
+    <div class="container">
+        {% if vnp_ResponseCode == '00' %}
+            <h1 class="success-message">Your payment was successful</h1>
+            <p>Your payment has been processed successfully.</p>
+        {% else %}
+            <h1 class="error-message">Error</h1>
+            <p>An error occurred during the payment process.</p>
+        {% endif %}
+        <h1></h1>
+        {% if msg %}
+            <div class="alert alert-warning">
+                {{ msg }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

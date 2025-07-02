@@ -1,0 +1,49 @@
+services:
+  nginx:
+    build: ./nginx
+    image: nginx
+    container_name: "nginx_bookstore_cont"
+    ports:
+      - "80:80"
+    depends_on:
+      - django_app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./bookstore/bookshop/static:/static
+    networks:
+      - backend
+
+  db:
+    image: mysql:9.0
+    container_name: "db_bookstore"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: test_db
+    volumes:
+      - ./data/mysql/db:/var/lib/mysql
+    networks:
+      - backend
+  django_app:
+    build:
+      context: ./bookstore
+      dockerfile: Dockerfile
+    container_name: "djano_bookstore_cont"
+    ports:
+      - "8001:8001"
+#    command: sh -c "gunicorn bookstore.wsgi:application --bind 0.0.0.0:8001--reload --reload"
+    command: python manage.py runserver 0.0.0.0:8001
+    env_file:
+      - "./bookstore/.env"
+    environment:
+        - PYTHONPATH=/bookstore/bookstore
+    depends_on:
+      - db
+    networks:
+      - backend
+    volumes:
+      - ./bookstore:/bookstore
+networks:
+  backend:
+    driver: bridge
+
