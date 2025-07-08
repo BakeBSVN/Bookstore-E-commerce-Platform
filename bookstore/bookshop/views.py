@@ -1,17 +1,17 @@
 import csv
-import os
+from django.core.files.temp import NamedTemporaryFile
 import requests
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product, Review
-from django.views.generic import DetailView
 from cart.forms import CartAddProductForm
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.template.defaultfilters import slugify
 from django.views import View
 from .forms import CSVUploadForm
-from django.conf import settings
+from django.core.files import File
 
 
 # Create your views here.
@@ -82,6 +82,7 @@ def Comment_Review(request, product_id):
     return render(request, 'bookshop/product_detail.html')
 
 
+#upload csv
 class CSVUploadView(View):
     def get(self, request):
         form = CSVUploadForm()
@@ -102,14 +103,16 @@ class CSVUploadView(View):
                 def save_image_from_url(url, filename):
                     response = requests.get(url)
                     if response.status_code == 200:
-                        file_path = os.path.join(settings.MEDIA_ROOT, 'products/2024/07', filename)
-                        with open(file_path, 'wb') as f:
-                            f.write(response.content)
-                        return file_path
+                        image_file = NamedTemporaryFile(delete=True)
+                        image_file.write(response.content)
+                        image_file.flush()
+                        return image_file
                     return None
 
                 product_name = row['name']
                 product_slug = slugify(row['slug']) if row['slug'] else slugify(product_name)
+                if Product.objects.filter(slug=product_slug, category=category).exists():
+                    continue
                 price = row['price']
                 try:
                     price = float(price) if price else 0.0
@@ -121,28 +124,31 @@ class CSVUploadView(View):
                     description=row['description'],
                     price=price,
                     available=row['available'].lower() == 'true',
-                    category=category  # Gán thể loại cho sản phẩm
+                    category=category
                 )
                 if row.get('image_url'):
                     image_path = save_image_from_url(row['image_url'], f"{product_slug}_1.jpg")
                     if image_path:
-                        product.image.name = f"products/2024/07{product_slug}_1.jpg"
+                        product.image.save(f"{product_slug}_1.jpg", File(image_path))
 
                 if row.get('image_url2'):
                     image_path = save_image_from_url(row['image_url2'], f"{product_slug}_2.jpg")
                     if image_path:
-                        product.image2.name = f"products/2024/07{product_slug}_2.jpg"
+                        product.image2.save(f"{product_slug}_2.jpg", File(image_path))
 
                 if row.get('image_url3'):
                     image_path = save_image_from_url(row['image_url3'], f"{product_slug}_3.jpg")
                     if image_path:
-                        product.image3.name = f"products/2024/07{product_slug}_3.jpg"
+                        product.image3.save(f'{product_slug}_3.jpg', File(image_path))
                 products.append(product)
 
-            Product.objects.bulk_create(products)
-            messages.success(request, 'Products have been successfully uploaded.')
-            return redirect('admin:csv_upload ')
+            try:
+                Product.objects.bulk_create(products)
+                messages.success(request, 'Products have been successfully uploaded.')
+
+            except IntegrityError as e:
+                messages.error(request, f"Error uploading products: {e}")
+
+            return redirect('admin:csv_upload')
 
         return render(request, 'admin/csv_upload.html', {'form': form})
-
-

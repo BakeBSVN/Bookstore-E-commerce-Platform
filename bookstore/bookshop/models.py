@@ -58,7 +58,6 @@ class Product(models.Model):
 
     @staticmethod
     def get_exchange_rate():
-        # Sử dụng API để lấy tỷ giá hối đoái từ USD sang VND
         try:
             response = requests.get(
                 'https://api.exchangerate-api.com/v4/latest/USD'
