@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <html lang="en">
     <head>
 
@@ -18,6 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLibre+Baskerville:400,700" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/font-awesome/css/font-awesome.min.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/ps-icon/style.css' %}">
+        <link rel="stylesheet" href="{% static 'users/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
         <!-- CSS Library-->
         <link rel="stylesheet" href="{% static 'bookshop/plugins/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/owl-carousel/assets/owl.carousel.css' %}">
@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="{% static 'bookshop/plugins/revolution/css/settings.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/revolution/css/layers.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/revolution/css/navigation.css' %}">
+        <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
         <!-- bootstrap -->
         <link rel="stylesheet" href="{% static 'bookshop/plugins/bootstrap/dist/css/bootstrap.min.css' %}">
 
@@ -50,7 +51,7 @@
                                         {% if user.is_superuser %}
                                             <div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account<i class="fa fa-angle-down"></i></a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{% url 'dashboard' %}">My Dashboard</a></li>
+                                                    <li><a href="{% url 'profile' %}">My Profile</a></li>
                                                     <li><a href="{% url 'admin:index' %}">Admin</a></li>
                                                     <li><a href="{% url 'logout' %}">Logout</a></li>
                                                 </ul>
@@ -58,7 +59,7 @@
                                         {% else %}
                                             <div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account<i class="fa fa-angle-down"></i></a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{% url 'dashboard' %}">My Dashboard</a></li>
+                                                    <li><a href="{% url 'profile' %}">My Profile</a></li>
                                                     <li><a href="{% url 'logout' %}">Logout</a></li>
                                                 </ul>
                                             </div>
@@ -67,7 +68,7 @@
                                     <div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login & Regiser <i class="fa fa-angle-down"></i></a>
                                         <ul class="dropdown-menu">
                                             <li><a href="{% url 'login' %}">Login</a></li>
-                                            <li><a href="{% url 'register' %}"> Register</a></li>
+                                            <li><a href="{% url 'register' %}"> Sing Up</a></li>
                                         </ul>
                                     </div>
                                 {% endif %}
@@ -329,6 +330,7 @@
         <script src="{% static 'bookshop/js/slider-1.js' %}"></script>
         <!-- Custom scripts-->
         <script src="{% static 'bookshop/js/main.js' %}"></script>
-
+        <script src="{% static 'users/vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'users/js/main.js' %}"></script>
     </body>
 </html>

@@ -11,12 +11,11 @@ from django.utils.encoding import force_bytes, force_str
 
 def register(request):
     if request.method == 'POST':
-        #Get form Values
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-        #check if password match
+        #check password
         if compare_digest(password, confirm_password):
             #check username
             if User.objects.filter(username=username).exists():
@@ -61,5 +60,5 @@ def logout(request):
     return redirect('login')
 
 
-def dashboard(request):
-    return render(request, 'users/dashboard.html')
+def profile(request):
+    return render(request, 'users/profile.html')
