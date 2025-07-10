@@ -2,7 +2,7 @@
 
 <html lang="en">
     <head>
-
+        {% block css %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,6 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CLibre+Baskerville:400,700" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/font-awesome/css/font-awesome.min.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/ps-icon/style.css' %}">
-        <link rel="stylesheet" href="{% static 'users/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
         <!-- CSS Library-->
         <link rel="stylesheet" href="{% static 'bookshop/plugins/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/owl-carousel/assets/owl.carousel.css' %}">
@@ -29,12 +28,11 @@
         <link rel="stylesheet" href="{% static 'bookshop/plugins/revolution/css/settings.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/revolution/css/layers.css' %}">
         <link rel="stylesheet" href="{% static 'bookshop/plugins/revolution/css/navigation.css' %}">
-        <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
         <!-- bootstrap -->
         <link rel="stylesheet" href="{% static 'bookshop/plugins/bootstrap/dist/css/bootstrap.min.css' %}">
-
-
+         {% endblock %}
         <title>{% block title %} BookShop {% endblock %}</title>
+
     </head>
     <body>
         <div class="header--sidebar"></div>
@@ -307,6 +305,8 @@
             </div>
         </div>
         <!-- JS Library-->
+
+        {% block js %}
         <script src="{% static 'bookshop/plugins/jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'bookshop/plugins/bootstrap/dist/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'bookshop/plugins/owl-carousel/owl.carousel.min.js' %}"></script>
@@ -330,7 +330,6 @@
         <script src="{% static 'bookshop/js/slider-1.js' %}"></script>
         <!-- Custom scripts-->
         <script src="{% static 'bookshop/js/main.js' %}"></script>
-        <script src="{% static 'users/vendor/jquery/jquery.min.js' %}"></script>
-        <script src="{% static 'users/js/main.js' %}"></script>
+        {% endblock %}
     </body>
 </html>

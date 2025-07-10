@@ -2,6 +2,12 @@
 {% load static %}
 <title>{% block title %} Registration | Bookshop{% endblock%}</title>
 
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'users/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+{% endblock%}
+
 
 {% block content %}
         <!-- Sign up form -->
@@ -45,6 +51,14 @@
             </div>
         </section>
 
+{% endblock %}
+
+
+    <!-- JS -->
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'users/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'users/js/main.js' %}"></script>
 {% endblock %}
 
 
