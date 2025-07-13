@@ -1,4 +1,6 @@
 import csv
+import os.path
+
 from django.core.files.temp import NamedTemporaryFile
 import requests
 from django.db import IntegrityError
@@ -12,6 +14,7 @@ from django.template.defaultfilters import slugify
 from django.views import View
 from .forms import CSVUploadForm
 from django.core.files import File
+from urllib.parse import urlparse
 
 
 # Create your views here.
@@ -83,6 +86,7 @@ def Comment_Review(request, product_id):
 
 
 #upload csv
+
 class CSVUploadView(View):
     def get(self, request):
         form = CSVUploadForm()
@@ -100,13 +104,20 @@ class CSVUploadView(View):
                 category_slug = slugify(category_name)
                 category, created = Category.objects.get_or_create(name=category_name, slug=category_slug)
 
-                def save_image_from_url(url, filename):
-                    response = requests.get(url)
-                    if response.status_code == 200:
-                        image_file = NamedTemporaryFile(delete=True)
-                        image_file.write(response.content)
-                        image_file.flush()
-                        return image_file
+                def if_url(path):
+                    return urlparse(path).scheme in ('http', 'https')
+
+                def get_image_file(image_path, filename):
+                    if if_url(image_path):
+                        response = requests.get(image_path)
+                        if response.status_code == 200:
+                            image_file = NamedTemporaryFile(delete=True)
+                            image_file.write(response.content)
+                            image_file.flush()
+                            return image_file
+                    else:
+                        if os.path.exists(image_path):
+                            return open(image_path, 'rb')
                     return None
 
                 product_name = row['name']
@@ -127,17 +138,17 @@ class CSVUploadView(View):
                     category=category
                 )
                 if row.get('image_url'):
-                    image_path = save_image_from_url(row['image_url'], f"{product_slug}_1.jpg")
+                    image_path = get_image_file(row['image_url'], f"{product_slug}_1.jpg")
                     if image_path:
                         product.image.save(f"{product_slug}_1.jpg", File(image_path))
 
                 if row.get('image_url2'):
-                    image_path = save_image_from_url(row['image_url2'], f"{product_slug}_2.jpg")
+                    image_path = get_image_file(row['image_url2'], f"{product_slug}_2.jpg")
                     if image_path:
                         product.image2.save(f"{product_slug}_2.jpg", File(image_path))
 
                 if row.get('image_url3'):
-                    image_path = save_image_from_url(row['image_url3'], f"{product_slug}_3.jpg")
+                    image_path = get_image_file(row['image_url3'], f"{product_slug}_3.jpg")
                     if image_path:
                         product.image3.save(f'{product_slug}_3.jpg', File(image_path))
                 products.append(product)

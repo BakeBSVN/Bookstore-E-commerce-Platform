@@ -13,7 +13,7 @@
     <div class="ps-section ps-section--jewelry ps-section--special-product masonry-root pt-30 pb-80" style="margin-top:-5%;">
         <div class="ps-container">
             <div class="ps-section__header text-center">
-                
+
                 <ul class="ps-masonry__filter">
 
                     <li {% if not category %} class="current" {% endif %}><a href="{% url 'product_list' %}" data-filter="*">All</a></li>
@@ -33,7 +33,6 @@
                             <div class="ps-product--fashion">
                                     <div class="ps-product__thumbnail"><a class="ps-product__overlay" href="{% url 'product_detail' product.slug %}"></a><img class="lazy" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="">
                                         <ul class="ps-product__actions">
-                                            
                                         </ul>
                                     </div>
                                     <div class="ps-product__content"><a class="ps-product__title" href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>

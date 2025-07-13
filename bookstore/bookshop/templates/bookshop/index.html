@@ -89,13 +89,10 @@
                             <div class="ps-product--fashion">
                                     <div class="ps-product__thumbnail"><a class="ps-product__overlay" href="{% url 'product_detail' product.slug %}"></a><img class="lazy" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/ .png' %}{% endif %}" alt="">
                                         <ul class="ps-product__actions">
-                                            
                                         </ul>
                                     </div>
                                     <div class="ps-product__content"><a class="ps-product__title" href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
                                         <p class="ps-product__price">₫{{ product.price }}</p><br>
-                                        
-                                        
                                     </div>
                             </div>
                         </div>
