@@ -36,20 +36,30 @@
                         <div class="ps-product__info">
                             <h1>{{ product.name }}</h1>
                             <h3 class="ps-product__price"><span>₫</span>{{product.price}}</h3>
+                            <div class="ps-product__short-desc">
+                                <p><b>Product Inventory</b> <br>{{ product.inventory }} </p>
+                            </div>
                             <p class="ps-product__category"><b>Category :</b>  <br>{{ product.category}}</p>
                             <div class="ps-product__short-desc">
                                 <p><b>Product Description :</b> <br>{{ product.description }}</p>
                             </div>
-
-                            <form action="{% url 'cart_add' product.id  %}" method="post">
+                                {% if product.inventory > 0 %}
+                                    <form action="{% url 'cart_add' product.id  %}" method="post">
                                 {{ cart_product_form }}
                                 {% csrf_token %}
                                 <div class="ps-product__shopping">
                                     <br>
                                     <input class="ps-btn" type="submit" value="Add to cart">
                                 </div>
-
                             </form>
+                                {%  else %}
+                                    <div class="alert alert-warning alert-dismissible" role="alert">
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                      The product is out of stock.
+                                    </div>
+                                {% endif %}
 
                         </div>
                     </div>
@@ -100,7 +110,6 @@
                             {% endif %}
                             <h4>ADD YOUR REVIEW</h4>
                             <div class="row">
-
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                                     <div class="form-group">
                                         <label>Name:<span>*</span></label>

@@ -34,7 +34,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     image2 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     image3 = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
-
+    inventory = models.IntegerField(default=0, db_index=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     available = models.BooleanField(default=True)

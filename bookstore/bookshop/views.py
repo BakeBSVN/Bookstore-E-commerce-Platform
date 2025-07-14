@@ -134,6 +134,7 @@ class CSVUploadView(View):
                     slug=product_slug,
                     description=row['description'],
                     price=price,
+                    inventory=row['inventory'],
                     available=row['available'].lower() == 'true',
                     category=category
                 )

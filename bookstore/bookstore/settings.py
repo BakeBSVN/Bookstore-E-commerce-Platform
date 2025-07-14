@@ -26,9 +26,9 @@ EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 EMAIL_FROM = os.getenv('EMAIL_FROM')
 PASSWORD_RESET_TIMEOUT = 14400
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*', 'phong.local']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*', 'phong.local', '0.0.0.0']
 
-CSRF_TRUSTED_ORIGINS = ['http://phong.local']
+CSRF_TRUSTED_ORIGINS = ['http://phong.local', 'http://0.0.0.0:8001', 'http://phong.local:8001']
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,19 +138,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'm  edia/')
+#
+STATIC_ROOT = './static/'
+MEDIA_ROOT = './media/'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'staticfiles'),
+# )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CART_SESSION_ID = 'cart'
 

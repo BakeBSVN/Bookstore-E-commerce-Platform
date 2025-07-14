@@ -1,7 +1,14 @@
 # Dockerfile
 FROM python:3.10
 
+
+RUN mkdir /bookstore
+RUN mkdir /static
+
+
 WORKDIR /bookstore
+
+RUN apt-get update && apt-get install -y gettext libgettextpo-dev zlib1g libjpeg-dev
 
 
 ENV PYTHONUNBUFFERED=1

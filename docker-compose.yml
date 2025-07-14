@@ -4,12 +4,12 @@ services:
     image: nginx
     container_name: "nginx_bookstore_cont"
     ports:
-      - "80:80"
+      - "8001:8001"
     depends_on:
       - django_app
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./bookstore/bookshop/static:/static
+      - ./bookstore:/bookstore
     networks:
       - backend
 
@@ -29,10 +29,10 @@ services:
       context: ./bookstore
       dockerfile: Dockerfile
     container_name: "djano_bookstore_cont"
-    ports:
-      - "8001:8001"
-#    command: sh -c "gunicorn bookstore.wsgi:application --bind 0.0.0.0:8001--reload --reload"
-    command: python manage.py runserver 0.0.0.0:8001
+    expose:
+      - "8001"
+    command: sh -c "gunicorn bookstore.wsgi:application --bind 0.0.0.0:8001--reload --reload"
+#    command: python manage.py runserver 0.0.0.0:8001
     env_file:
       - "./bookstore/.env"
     environment:

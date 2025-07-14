@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-## Create static
-#mkdir -p /bookstore/static
-
 
 chmod +x ./docker-entrypoint.sh
 /wait-for-it.sh db:3306 --timeout=20 --strict -- echo "MySQL is up"
@@ -11,7 +8,7 @@ chmod +x ./docker-entrypoint.sh
 python manage.py migrate
 
 ## Collect static files
-#python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput
 
 # Run server
 #uwsgi --ini /bookstore/uwsgi.ini
