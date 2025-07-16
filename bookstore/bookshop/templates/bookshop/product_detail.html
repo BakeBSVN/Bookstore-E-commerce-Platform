@@ -45,18 +45,16 @@
                             </div>
                                 {% if product.inventory > 0 %}
                                     <form action="{% url 'cart_add' product.id  %}" method="post">
-                                {{ cart_product_form }}
-                                {% csrf_token %}
-                                <div class="ps-product__shopping">
-                                    <br>
-                                    <input class="ps-btn" type="submit" value="Add to cart">
-                                </div>
-                            </form>
+                                        {% csrf_token %}
+                                        <div class="form_group">
+                                            {{ cart_product_form }}
+                                        </div>
+                                        <div class="ps-product__shopping">
+                                            <br><input class="ps-btn" type="submit" value="Add to cart">
+                                        </div>
+                                    </form>
                                 {%  else %}
                                     <div class="alert alert-warning alert-dismissible" role="alert">
-                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
                                       The product is out of stock.
                                     </div>
                                 {% endif %}
@@ -68,8 +66,6 @@
                     <ul class="tab-list" role="tablist">
                         <li class="active"><a href="#tab_01" aria-controls="tab_01" role="tab" data-toggle="tab">Overview</a></li>
                         <li><a href="#tab_02" aria-controls="tab_02" role="tab" data-toggle="tab">Review</a></li>
-
-
                     </ul>
                 </div>
                 <div class="tab-content">

@@ -4,7 +4,7 @@ from bookshop.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
 from coupons.forms import CouponApplyForm
-
+from django.http import JsonResponse
 
 @require_POST
 def cart_add(request, product_id):
@@ -13,8 +13,9 @@ def cart_add(request, product_id):
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
+        quantity = form.cleaned_data['quantity']
         cart.add(product=product,
-                 quantity=cd['quantity'],
+                 quantity=quantity,
                  override_quantity=cd['override'])
     return redirect('cart_detail')
 
@@ -23,12 +24,12 @@ def cart_add(request, product_id):
 def cart_update(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    quantity = int(request.POST.get('quantity'))
+    quantity = int(request.POST.get('quantity', 0))
     if quantity > 0:
         cart.add(product=product, quantity=quantity, override_quantity=True)
     else:
         cart.remove(product)
-    return redirect('cart_detail')
+    return JsonResponse({'success': True})
 
 
 @require_POST

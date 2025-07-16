@@ -42,14 +42,16 @@ def product_list(request, category_slug=None):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, available=True)
-    cart_product_form = CartAddProductForm()
-    reviewproduct = Product.objects.filter(slug=slug)
-    prid = None
-    for product_id in reviewproduct:
-        prid = product_id.id
-
-    all_reviews = Review.objects.filter(product=prid)
-
+    all_reviews = Review.objects.filter(product=product)
+    if request.method == 'POST':
+        cart_product_form = CartAddProductForm(request.POST)
+        if cart_product_form.is_valid():
+            cd = cart_product_form.cleaned_data
+            cart = request.session.get('cart', {})
+            cart[product.id] = cart.get(product.id, 0) + cd['quantity']
+            request.session['cart'] = cart
+    else:
+        cart_product_form = CartAddProductForm()
     return render(request, 'bookshop/product_detail.html',
                   {'product': product, 'cart_product_form': cart_product_form, 'all_reviews': all_reviews})
 

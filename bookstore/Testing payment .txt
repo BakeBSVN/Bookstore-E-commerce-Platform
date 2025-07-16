@@ -1,0 +1,12 @@
+vnpay:
+Ngân hàng:	NCB
+Số thẻ:	9704198526191432198
+Tên chủ thẻ:	NGUYEN VAN A
+Ngày phát hành:	07/15
+Mật khẩu OTP:	123456
+
+
+paypal:
+Card number: 4111 1111 1111 1111
+CVV: 123
+expiry date: 12/28

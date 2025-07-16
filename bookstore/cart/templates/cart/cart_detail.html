@@ -35,26 +35,23 @@
                                     <td>₫{{ item.price }}</td>
                                     <td>
                                         <div class="form-group--number">
-                                            <form action="{% url 'cart_update' product.id %}" method="post" style="display: inline;">
+                                            <form id="decrement-form-{{ product.id }}" action="{% url 'cart_update' product.id %}" method="post" style="display: inline;">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="quantity" value="{{ item.quantity|add:-1 }}">
-                                                <input type="submit" value="-" class="btn btn-sm btn-danger">
+                                                <input type="button" value="-" class="btn btn-sm btn-danger" onclick="updateQuantity('{{ product.id }}', -1)">
                                             </form>
-                                            <span>{{ item.quantity }}</span>
-                                            <form action="{% url 'cart_update' product.id %}" method="post" style="display: inline;">
+                                            <span id="quantity-{{ product.id }}">{{ item.quantity }}</span>
+                                            <form id="increment-form-{{ product.id }}" action="{% url 'cart_update' product.id %}" method="post" style="display: inline;">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="quantity" value="{{ item.quantity|add:1 }}">
-                                                <input type="submit" value="+" class="btn btn-sm btn-success">
+                                                <input type="button" value="+" class="btn btn-sm btn-success" onclick="updateQuantity('{{ product.id }}', 1)">
                                             </form>
                                         </div>
                                     </td>
-                                    <td>₫{{ item.total_price }}</td>
-                                    <td>
-                                        <form action="{% url 'cart_remove' product.id %}" method="post">
+                                    <form action="{% url 'cart_remove' product.id %}" method="post">
                                             {% csrf_token %}
                                             <button type="submit" class="ps-remove"></button>
-                                        </form>
-                                    </td>
+                                    </form>
                                 </tr>
                             {% endwith %}
                         {% endfor %}
@@ -92,4 +89,36 @@
             </div>
         </div>
     </div>
+
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function updateQuantity(productId, change) {
+    $.ajax({
+        url: "{% url 'cart_update' 0 %}".replace('0', productId),
+        type: 'POST',
+        data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+            'quantity': change
+        },
+        success: function(response) {
+            if (response.success) {
+                var currentQuantity = parseInt($('#quantity-' + productId).text());
+                var newQuantity = currentQuantity + change;
+                if (newQuantity >= 0) {
+                    $('#quantity-' + productId).text(newQuantity);
+                }
+            } else {
+                console.error('Update failed');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+</script>
 {% endblock %}
