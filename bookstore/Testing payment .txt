@@ -5,8 +5,19 @@ Tên chủ thẻ:	NGUYEN VAN A
 Ngày phát hành:	07/15
 Mật khẩu OTP:	123456
 
-
-paypal:
+PayPal:
 Card number: 4111 1111 1111 1111
 CVV: 123
 expiry date: 12/28
+
+
+Login:
+username:
+usertest
+password:
+usertest
+
+
+admin:
+username: admin
+password: admin
