@@ -28,7 +28,7 @@ PASSWORD_RESET_TIMEOUT = 14400
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*', 'phong.local', '0.0.0.0']
 
-CSRF_TRUSTED_ORIGINS = ['http://phong.local', 'http://0.0.0.0:8001', 'http://phong.local:8001']
+CSRF_TRUSTED_ORIGINS = ['http://phong.local', 'http://0.0.0.0:8001', 'http://phong.local:8001', 'http://localhost']
 # Application definition
 
 INSTALLED_APPS = [
@@ -174,7 +174,7 @@ LOGOUT_REDIRECT_URL = 'index'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # VNPAY CONFIG
-VNPAY_RETURN_URL = 'http://localhost:8001/payment/payment_return'  # get from config
+VNPAY_RETURN_URL = 'http://localhost/payment/payment_return'  # get from config
 VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
 VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction'
 VNPAY_TMN_CODE = os.getenv('VNPAY_TMN_CODE')  # Website ID in VNPAY System, get from config

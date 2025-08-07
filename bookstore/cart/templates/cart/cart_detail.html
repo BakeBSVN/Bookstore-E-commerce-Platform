@@ -26,7 +26,12 @@
                         {% for item in cart %}
                             {% with product=item.product %}
                                 <tr>
+
                                     <td>
+                                        <form action="{% url 'cart_remove' product.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="ps-remove"></button>
+                                        </form>
                                         <a class="ps-product--compare" href="{{ product.get_absolute_url }}">
                                             <img class="mr-15" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="">
                                             {{ product.name }}
@@ -46,12 +51,10 @@
                                                 <input type="hidden" name="quantity" value="{{ item.quantity|add:1 }}">
                                                 <input type="button" value="+" class="btn btn-sm btn-success" onclick="updateQuantity('{{ product.id }}', 1)">
                                             </form>
+
                                         </div>
                                     </td>
-                                    <form action="{% url 'cart_remove' product.id %}" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit" class="ps-remove"></button>
-                                    </form>
+
                                 </tr>
                             {% endwith %}
                         {% endfor %}

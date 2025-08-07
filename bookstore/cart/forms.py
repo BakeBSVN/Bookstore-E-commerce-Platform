@@ -3,6 +3,7 @@ from django import forms
 
 class CartAddProductForm(forms.Form):
     quantity = forms.IntegerField(
+        initial=1,
         min_value=1,
         label="Quantity",
         widget=forms.NumberInput(attrs={

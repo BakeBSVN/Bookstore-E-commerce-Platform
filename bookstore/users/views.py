@@ -36,7 +36,7 @@ def register(request):
     else:
         return render(request, 'users/registration.html')
 
-
+ 
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -49,7 +49,7 @@ def login(request):
             return redirect('index')
         else:
             messages.error(request, "Invalid Credentials")
-            return redirect('login')
+            return render(request, 'users/login.html')
     else:
         return render(request, 'users/login.html')
 
