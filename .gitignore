@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 data/mysql/db/
-bookstore/.env/
+bookstore/.env
 # Distribution / packaging
 .Python
 #build/
