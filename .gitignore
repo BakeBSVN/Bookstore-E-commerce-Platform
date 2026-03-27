@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 data/mysql/db/
-bookstore/.env
+bookstore/
 # Distribution / packaging
 .Python
 #build/
@@ -124,6 +124,9 @@ celerybeat.pid
 
 # Environments
 .env
+.evn
+bookstore/.env
+bookstore/.env.*
 .venv
 env/
 venv/
